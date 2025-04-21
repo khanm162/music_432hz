@@ -2,8 +2,7 @@ name: Build iOS App
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
   build:
@@ -11,16 +10,18 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.3'  # You can update this based on your Flutter version
+          flutter-version: '3.19.3'
+          channel: stable
+
+      - name: Check Flutter & Dart version
+        run: flutter --version
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build iOS
-        run: flutter build ios --release --no-codesign
+      # Add your build steps here
