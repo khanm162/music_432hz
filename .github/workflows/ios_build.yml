@@ -6,20 +6,25 @@ on:
 
 jobs:
   build:
-    name: Build on macOS
+    name: Build iOS Release IPA
     runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
-          channel: stable
-
-      - name: Check Flutter & Dart version
-        run: flutter --version
+          flutter-version: "3.22.0"
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Build iOS release
+        run: flutter build ipa --export-method ad-hoc
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS App (.ipa)
+          path: build/ios/ipa/*.ipa
