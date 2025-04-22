@@ -5,8 +5,25 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await requestPermissions(); // ✅ Request storage permissions before app runs
   runApp(MyApp());
+}
+
+Future<void> requestPermissions() async {
+  if (Platform.isAndroid) {
+    // ✅ For Android 13+ use READ_MEDIA_* permissions
+    if (Platform.version.contains("13") || Platform.version.contains("14")) {
+      await [
+        Permission.audio,
+        Permission.videos,
+        Permission.photos,
+      ].request();
+    } else {
+      await Permission.storage.request();
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -32,28 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
   String _status = '';
 
-  // 👇 Convert and download function
   Future<void> convertAndDownload(String youtubeUrl) async {
     setState(() {
       _isLoading = true;
       _status = 'Processing...';
     });
 
-    final uri = Uri.parse('http://172.16.16.83:5000/convert'); // <-- Replace this with your actual backend IP
+    final uri = Uri.parse('http://172.16.16.83:5000/convert'); // <-- Replace with your backend IP
 
     try {
-      // 🔐 Ask for storage permission only on Android
-      if (Platform.isAndroid) {
-        var permissionStatus = await Permission.storage.request();
-        if (!permissionStatus.isGranted) {
-          setState(() {
-            _status = 'Storage permission denied';
-            _isLoading = false;
-          });
-          return;
-        }
-      }
-
       final response = await http.post(
         uri,
         headers: {
