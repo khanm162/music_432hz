@@ -20,6 +20,3 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build iOS release
-        run: flutter build ipa --export-method ad-hoc
-
