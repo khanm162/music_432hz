@@ -6,9 +6,9 @@ plugins {
 }
 
 android {
-    namespace = "com.example.music_432hz"
+    namespace = "com.example.music_432hz"  // Set the namespace here
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"  // Set the NDK version as required
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

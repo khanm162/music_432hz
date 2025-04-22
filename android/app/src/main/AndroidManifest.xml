@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.music432hz">
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <!-- Permissions for media access on Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
